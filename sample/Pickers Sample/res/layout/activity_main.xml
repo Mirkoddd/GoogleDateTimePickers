@@ -1,0 +1,104 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <TextView
+        android:id="@+id/tv_title_flashing_mode"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Date and time pickers" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="?android:attr/dividerHorizontal"
+        android:orientation="vertical"
+        android:showDividers="end|middle" >
+
+        <LinearLayout
+            android:id="@+id/dateLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="?android:attr/dividerHorizontal"
+            android:dividerPadding="5dp"
+            android:orientation="horizontal"
+            android:showDividers="middle" >
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-light"
+                android:paddingLeft="5dp"
+                android:text="Date here!"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="25sp" />
+
+            <ImageButton
+                android:id="@+id/btnChangeDate"
+                style="@android:style/Widget.Holo.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_date"
+                android:tint="@android:color/holo_blue_light" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/timeLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="?android:attr/dividerHorizontal"
+            android:dividerPadding="5dp"
+            android:orientation="horizontal"
+            android:showDividers="middle" >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-light"
+                    android:paddingLeft="5dp"
+                    android:text="Time here!"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="25sp" />
+
+                <Switch
+                    android:id="@+id/switch1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:textOff="12H"
+                    android:textOn="24H" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btnChangeTime"
+                style="@android:style/Widget.Holo.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_time"
+                android:tint="@android:color/holo_blue_light" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
