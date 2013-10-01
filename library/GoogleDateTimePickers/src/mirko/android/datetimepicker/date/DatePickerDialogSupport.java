@@ -29,12 +29,12 @@ import mirko.android.datetimepicker.Utils;
 import mirko.android.datetimepicker.date.SimpleMonthAdapter.CalendarDay;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.support.v4.app.DialogFragment;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,10 +50,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * Dialog allowing users to select a date. This class is designed for ICS or higher using
- * the ICS Fragment APIs.
+ * Dialog allowing users to select a date. This is the version using the support fragment APIs.
  */
-public class DatePickerDialog extends DialogFragment implements
+public class DatePickerDialogSupport extends DialogFragment implements
         OnClickListener, DatePickerController {
 
     private static final String TAG = "DatePickerDialog";
@@ -130,18 +129,16 @@ public class DatePickerDialog extends DialogFragment implements
          *            with {@link java.util.Calendar}.
          * @param dayOfMonth The day of the month that was set.
          */
-        void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth);
+        void onDateSet(DatePickerDialogSupport dialog, int year, int monthOfYear, int dayOfMonth);
 
         /**
          * Called when the user dismisses the dialog with the clear button.
          * @param datePickerDialog	the dialog that was dismissed
          */
-		void onDateCleared(DatePickerDialog datePickerDialog);
+		void onDateCleared(DatePickerDialogSupport datePickerDialog);
     }
 
-
-
-    public DatePickerDialog() {
+    public DatePickerDialogSupport() {
         // Empty constructor required for dialog fragment.
     }
 
@@ -152,10 +149,10 @@ public class DatePickerDialog extends DialogFragment implements
      * @param dayOfMonth The initial day of the dialog.
      * @param enableClearButton if <code>true</code> then the dialog will also show a "clear" button.
      */
-    public static DatePickerDialog newInstance(OnDateSetListener callBack, int year,
+    public static DatePickerDialogSupport newInstance(OnDateSetListener callBack, int year,
             int monthOfYear,
             int dayOfMonth, boolean enableClearButton) {
-        DatePickerDialog ret = new DatePickerDialog();
+        DatePickerDialogSupport ret = new DatePickerDialogSupport();
         ret.initialize(callBack, year, monthOfYear, dayOfMonth, enableClearButton);
         return ret;
     }

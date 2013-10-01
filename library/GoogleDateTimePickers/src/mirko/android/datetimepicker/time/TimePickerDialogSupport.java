@@ -27,9 +27,9 @@ import mirko.android.datetimepicker.Utils;
 import mirko.android.datetimepicker.time.RadialPickerLayout.OnValueSelectedListener;
 import android.animation.ObjectAnimator;
 import android.app.ActionBar.LayoutParams;
-import android.app.DialogFragment;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -43,9 +43,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
- * Dialog to set a time. This version uses the post -ICS fragment API.
+ * Dialog to set a time. This version uses the support fragment apis for pre-ICS versions.
  */
-public class TimePickerDialog extends DialogFragment implements OnValueSelectedListener, OnClickListener {
+public class TimePickerDialogSupport extends DialogFragment implements OnValueSelectedListener, OnClickListener {
     private static final String TAG = "TimePickerDialog";
 
     private static final String KEY_HOUR_OF_DAY = "hour_of_day";
@@ -119,22 +119,22 @@ public class TimePickerDialog extends DialogFragment implements OnValueSelectedL
          * @param hourOfDay The hour that was set.
          * @param minute The minute that was set.
          */
-        void onTimeSet(TimePickerDialog dialog, int hourOfDay, int minute);
+        void onTimeSet(TimePickerDialogSupport dialog, int hourOfDay, int minute);
 
         /**
          * Called when the user dismisses the dialog with the clear button.
          * @param timePickerDialog	the dialog that was dismissed
          */
-		void onTimeCleared(TimePickerDialog timePickerDialog);
+		void onTimeCleared(TimePickerDialogSupport timePickerDialog);
     }
 
-    public TimePickerDialog() {
+    public TimePickerDialogSupport() {
         // Empty constructor required for dialog fragment.
     }
 
-    public static TimePickerDialog newInstance(OnTimeSetListener callback,
+    public static TimePickerDialogSupport newInstance(OnTimeSetListener callback,
             int hourOfDay, int minute, boolean is24HourMode, boolean enableClearButton) {
-        TimePickerDialog ret = new TimePickerDialog();
+        TimePickerDialogSupport ret = new TimePickerDialogSupport();
         ret.initialize(callback, hourOfDay, minute, is24HourMode, enableClearButton);
         return ret;
     }

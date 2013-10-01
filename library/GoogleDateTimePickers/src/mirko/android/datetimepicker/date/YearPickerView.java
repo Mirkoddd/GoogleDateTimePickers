@@ -16,10 +16,13 @@
 
 package mirko.android.datetimepicker.date;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import mirko.android.datetimepicker.R;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.StateListDrawable;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
@@ -28,13 +31,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import mirko.android.datetimepicker.R;
-import mirko.android.datetimepicker.Utils;
-import mirko.android.datetimepicker.date.DatePickerDialog.OnDateChangedListener;
 
 /**
  * Displays a selectable list of years.

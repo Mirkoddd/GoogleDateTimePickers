@@ -16,6 +16,12 @@
 
 package mirko.android.datetimepicker.date;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+import mirko.android.datetimepicker.Utils;
+import mirko.android.datetimepicker.date.SimpleMonthAdapter.CalendarDay;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
@@ -28,14 +34,6 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-
-import mirko.android.datetimepicker.Utils;
-import mirko.android.datetimepicker.date.DatePickerDialog.OnDateChangedListener;
-import mirko.android.datetimepicker.date.SimpleMonthAdapter.CalendarDay;
 
 /**
  * This displays a list of months in a calendar format with selectable days.

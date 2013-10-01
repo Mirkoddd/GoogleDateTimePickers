@@ -16,7 +16,6 @@
 
 package mirko.android.datetimepicker.date;
 
-import mirko.android.datetimepicker.date.DatePickerDialog.OnDateChangedListener;
 import mirko.android.datetimepicker.date.SimpleMonthAdapter.CalendarDay;
 
 /**

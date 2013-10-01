@@ -125,7 +125,10 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
         // Prepare mapping to snap touchable degrees to selectable degrees.
         preparePrefer30sMap();
 
-        mVibrator = (Vibrator) context.getSystemService(Service.VIBRATOR_SERVICE);
+        if (!isInEditMode()) {
+        	mVibrator = (Vibrator) context.getSystemService(Service.VIBRATOR_SERVICE);
+        	mAccessibilityManager = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
+        }
         mLastVibrate = 0;
         mLastValueSelected = -1;
 
@@ -137,7 +140,6 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
         mGrayBox.setVisibility(View.INVISIBLE);
         addView(mGrayBox);
 
-        mAccessibilityManager = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
         mTimeInitialized = false;
     }
