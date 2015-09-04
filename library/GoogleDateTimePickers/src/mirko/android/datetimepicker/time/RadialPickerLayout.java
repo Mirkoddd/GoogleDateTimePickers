@@ -22,6 +22,7 @@ import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -177,7 +178,12 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
             return;
         }
         mIs24HourMode = is24HourMode;
-        mHideAmPm = mAccessibilityManager.isTouchExplorationEnabled()? true : mIs24HourMode;
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            mHideAmPm = mIs24HourMode;
+        } else {
+            mHideAmPm = mAccessibilityManager.isTouchExplorationEnabled()? true : mIs24HourMode;
+        }
 
         // Initialize the circle and AM/PM circles if applicable.
         mCircleView.initialize(context, mHideAmPm);

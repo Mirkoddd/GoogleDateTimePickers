@@ -14,38 +14,52 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/date_picker_view_animator_height"
-    android:gravity="center"
-    android:orientation="horizontal" >
+<mirko.android.datetimepicker.date.FrameLayoutWithMaxHeight
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/date_picker_component_width"
+    android:layout_height="match_parent"
+    app:maxHeight="@dimen/max_dialog_height"
+    >
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:background="@color/white"
-        android:orientation="vertical" >
+        android:gravity="center"
+        android:orientation="horizontal"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="0dip"
-            android:layout_weight="1"
-            android:orientation="vertical" >
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:orientation="vertical">
 
-            <include layout="@layout/date_picker_header_view" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <include layout="@layout/date_picker_selected_date" />
+                <include layout="@layout/date_picker_header_view"/>
+
+                <include layout="@layout/date_picker_selected_date"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:background="@color/line_background"/>
+
+            <include layout="@layout/date_picker_done_button"/>
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/line_background" />
+        <include
+            layout="@layout/date_picker_view_animator"
+            android:layout_width="@dimen/date_picker_component_width"
+            android:layout_height="match_parent"
+            />
 
-        <include layout="@layout/date_picker_done_button" />
     </LinearLayout>
-
-    <include layout="@layout/date_picker_view_animator" />
-
-</LinearLayout>
+</mirko.android.datetimepicker.date.FrameLayoutWithMaxHeight>
