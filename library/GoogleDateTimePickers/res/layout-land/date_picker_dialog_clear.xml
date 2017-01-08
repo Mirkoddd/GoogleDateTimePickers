@@ -22,35 +22,42 @@
     app:maxHeight="@dimen/max_dialog_height"
     >
 
-    <LinearLayout
-        android:layout_width="@dimen/date_picker_component_width"
-        android:layout_height="match_parent"
-        android:background="@color/date_picker_view_animator"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:weightSum="@integer/date_picker_dialog_weightsum">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="center"
+                  android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_weight="@integer/selected_calendar_layout_height_weight"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/white"
             android:orientation="vertical">
 
-            <include layout="@layout/date_picker_selected_date"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <include layout="@layout/date_picker_header_view"/>
+
+                <include layout="@layout/date_picker_selected_date"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:background="@color/line_background"/>
+
+            <include layout="@layout/date_picker_clear_done_button"/>
         </LinearLayout>
 
         <include
             layout="@layout/date_picker_view_animator"
             android:layout_width="@dimen/date_picker_component_width"
-            android:layout_height="0dp"
-            android:layout_weight="@integer/date_picker_view_animator_height_weight"
-            />
-
-        <View
-            android:layout_width="@dimen/date_picker_component_width"
-            android:layout_height="1dip"
-            android:background="@color/line_background"/>
-
-        <include layout="@layout/date_picker_done_button"/>
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 </mirko.android.datetimepicker.date.FrameLayoutWithMaxHeight>

@@ -29,12 +29,12 @@ import mirko.android.datetimepicker.Utils;
 import mirko.android.datetimepicker.date.SimpleMonthAdapter.CalendarDay;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.support.v4.app.DialogFragment;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,10 +50,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * Dialog allowing users to select a date. This class is designed for ICS or higher using
- * the ICS Fragment APIs.
+ * Dialog allowing users to select a date. This is the version using the support fragment APIs.
  */
-public class DatePickerDialog extends DialogFragment implements
+public class DatePickerDialogSupport extends DialogFragment implements
         OnClickListener, DatePickerController {
 
     private static final String TAG = "DatePickerDialog";
@@ -66,7 +65,6 @@ public class DatePickerDialog extends DialogFragment implements
     private static final String KEY_SELECTED_MONTH = "month";
     private static final String KEY_SELECTED_DAY = "day";
     private static final String KEY_ENABLE_CLEAR_BUTTON = "enableClear";
-    private static final String KEY_ALLOW_VIBRATION = "allowVibration";
     private static final String KEY_LIST_POSITION = "list_position";
     private static final String KEY_WEEK_START = "week_start";
     private static final String KEY_YEAR_START = "year_start";
@@ -118,7 +116,6 @@ public class DatePickerDialog extends DialogFragment implements
 	private boolean mEnableClearButton;
 
 	private Button mClearButton;
-    private boolean mAllowVibration = true;
 
     /**
      * The callback used to indicate the user is done filling in the date.
@@ -132,18 +129,16 @@ public class DatePickerDialog extends DialogFragment implements
          *            with {@link java.util.Calendar}.
          * @param dayOfMonth The day of the month that was set.
          */
-        void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth);
+        void onDateSet(DatePickerDialogSupport dialog, int year, int monthOfYear, int dayOfMonth);
 
         /**
          * Called when the user dismisses the dialog with the clear button.
          * @param datePickerDialog	the dialog that was dismissed
          */
-		void onDateCleared(DatePickerDialog datePickerDialog);
+		void onDateCleared(DatePickerDialogSupport datePickerDialog);
     }
 
-
-
-    public DatePickerDialog() {
+    public DatePickerDialogSupport() {
         // Empty constructor required for dialog fragment.
     }
 
@@ -154,10 +149,10 @@ public class DatePickerDialog extends DialogFragment implements
      * @param dayOfMonth The initial day of the dialog.
      * @param enableClearButton if <code>true</code> then the dialog will also show a "clear" button.
      */
-    public static DatePickerDialog newInstance(OnDateSetListener callBack, int year,
+    public static DatePickerDialogSupport newInstance(OnDateSetListener callBack, int year,
             int monthOfYear,
             int dayOfMonth, boolean enableClearButton) {
-        DatePickerDialog ret = new DatePickerDialog();
+        DatePickerDialogSupport ret = new DatePickerDialogSupport();
         ret.initialize(callBack, year, monthOfYear, dayOfMonth, enableClearButton);
         return ret;
     }
@@ -169,10 +164,6 @@ public class DatePickerDialog extends DialogFragment implements
         mCalendar.set(Calendar.MONTH, monthOfYear);
         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         mEnableClearButton = enableClear;
-    }
-
-    public void setAllowVibration(boolean allowVibration) {
-        this.mAllowVibration = allowVibration;
     }
 
     @Override
@@ -187,7 +178,6 @@ public class DatePickerDialog extends DialogFragment implements
             mCalendar.set(Calendar.MONTH, savedInstanceState.getInt(KEY_SELECTED_MONTH));
             mCalendar.set(Calendar.DAY_OF_MONTH, savedInstanceState.getInt(KEY_SELECTED_DAY));
             mEnableClearButton = savedInstanceState.getBoolean(KEY_ENABLE_CLEAR_BUTTON, false);
-            mAllowVibration = savedInstanceState.getBoolean(KEY_ALLOW_VIBRATION, true);
         }
     }
 
@@ -202,7 +192,6 @@ public class DatePickerDialog extends DialogFragment implements
         outState.putInt(KEY_YEAR_END, mMaxYear);
         outState.putInt(KEY_CURRENT_VIEW, mCurrentView);
         outState.putBoolean(KEY_ENABLE_CLEAR_BUTTON, mEnableClearButton);
-        outState.putBoolean(KEY_ALLOW_VIBRATION, mAllowVibration);
         int listPosition = -1;
         if (mCurrentView == MONTH_AND_DAY_VIEW) {
             listPosition = mDayPickerView.getMostVisiblePosition();
@@ -500,7 +489,7 @@ public class DatePickerDialog extends DialogFragment implements
      */
     @Override
     public void tryVibrate() {
-        if (mAllowVibration && mVibrator != null) {
+        if (mVibrator != null) {
             long now = SystemClock.uptimeMillis();
             // We want to try to vibrate each individual tick discretely.
             if (now - mLastVibrate >= 125) {

@@ -27,9 +27,9 @@ import mirko.android.datetimepicker.Utils;
 import mirko.android.datetimepicker.time.RadialPickerLayout.OnValueSelectedListener;
 import android.animation.ObjectAnimator;
 import android.app.ActionBar.LayoutParams;
-import android.app.DialogFragment;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -43,9 +43,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
- * Dialog to set a time. This version uses the post -ICS fragment API.
+ * Dialog to set a time. This version uses the support fragment apis for pre-ICS versions.
  */
-public class TimePickerDialog extends DialogFragment implements OnValueSelectedListener, OnClickListener {
+public class TimePickerDialogSupport extends DialogFragment implements OnValueSelectedListener, OnClickListener {
     private static final String TAG = "TimePickerDialog";
 
     private static final String KEY_HOUR_OF_DAY = "hour_of_day";
@@ -55,7 +55,6 @@ public class TimePickerDialog extends DialogFragment implements OnValueSelectedL
     private static final String KEY_IN_KB_MODE = "in_kb_mode";
     private static final String KEY_TYPED_TIMES = "typed_times";
     private static final String KEY_ENABLE_CLEAR_BUTTON = "enableClearButton";
-    private static final String KEY_ALLOW_VIBRATION = "allowVibration";
 
     public static final int HOUR_INDEX = 0;
     public static final int MINUTE_INDEX = 1;
@@ -106,7 +105,6 @@ public class TimePickerDialog extends DialogFragment implements OnValueSelectedL
     private String mSelectHours;
     private String mMinutePickerDescription;
     private String mSelectMinutes;
-    private boolean mAllowVibration = true;
 
 	private boolean mEnableClearButton;
 
@@ -121,22 +119,22 @@ public class TimePickerDialog extends DialogFragment implements OnValueSelectedL
          * @param hourOfDay The hour that was set.
          * @param minute The minute that was set.
          */
-        void onTimeSet(TimePickerDialog dialog, int hourOfDay, int minute);
+        void onTimeSet(TimePickerDialogSupport dialog, int hourOfDay, int minute);
 
         /**
          * Called when the user dismisses the dialog with the clear button.
          * @param timePickerDialog	the dialog that was dismissed
          */
-		void onTimeCleared(TimePickerDialog timePickerDialog);
+		void onTimeCleared(TimePickerDialogSupport timePickerDialog);
     }
 
-    public TimePickerDialog() {
+    public TimePickerDialogSupport() {
         // Empty constructor required for dialog fragment.
     }
 
-    public static TimePickerDialog newInstance(OnTimeSetListener callback,
+    public static TimePickerDialogSupport newInstance(OnTimeSetListener callback,
             int hourOfDay, int minute, boolean is24HourMode, boolean enableClearButton) {
-        TimePickerDialog ret = new TimePickerDialog();
+        TimePickerDialogSupport ret = new TimePickerDialogSupport();
         ret.initialize(callback, hourOfDay, minute, is24HourMode, enableClearButton);
         return ret;
     }
@@ -150,13 +148,6 @@ public class TimePickerDialog extends DialogFragment implements OnValueSelectedL
         mIs24HourMode = is24HourMode;
         mInKbMode = false;
         mEnableClearButton = enableClearButton;
-    }
-
-    public void setAllowVibration(boolean allowVibration) {
-        this.mAllowVibration = allowVibration;
-        if (mTimePicker != null) {
-            mTimePicker.setAllowVibration(allowVibration);
-        }
     }
 
     public void setOnTimeSetListener(OnTimeSetListener callback) {
@@ -180,7 +171,6 @@ public class TimePickerDialog extends DialogFragment implements OnValueSelectedL
             mIs24HourMode = savedInstanceState.getBoolean(KEY_IS_24_HOUR_VIEW);
             mInKbMode = savedInstanceState.getBoolean(KEY_IN_KB_MODE);
             mEnableClearButton = savedInstanceState.getBoolean(KEY_ENABLE_CLEAR_BUTTON, false);
-            mAllowVibration = savedInstanceState.getBoolean(KEY_ALLOW_VIBRATION, true);
         }
     }
 
@@ -215,7 +205,6 @@ public class TimePickerDialog extends DialogFragment implements OnValueSelectedL
         mPmText = amPmTexts[1];
 
         mTimePicker = (RadialPickerLayout) view.findViewById(R.id.time_picker);
-        mTimePicker.setAllowVibration(mAllowVibration);
         mTimePicker.setOnValueSelectedListener(this);
         mTimePicker.setOnKeyListener(keyboardListener);
         mTimePicker.initialize(getActivity(), mInitialHourOfDay, mInitialMinute, mIs24HourMode);
@@ -339,7 +328,6 @@ public class TimePickerDialog extends DialogFragment implements OnValueSelectedL
             outState.putInt(KEY_CURRENT_ITEM_SHOWING, mTimePicker.getCurrentItemShowing());
             outState.putBoolean(KEY_IN_KB_MODE, mInKbMode);
             outState.putBoolean(KEY_ENABLE_CLEAR_BUTTON, mEnableClearButton);
-            outState.putBoolean(KEY_ALLOW_VIBRATION, mAllowVibration);
             if (mInKbMode) {
                 outState.putIntegerArrayList(KEY_TYPED_TIMES, mTypedTimes);
             }

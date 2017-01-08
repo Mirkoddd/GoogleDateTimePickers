@@ -22,8 +22,10 @@ import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.text.format.DateUtils;
@@ -92,6 +94,7 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
 
     private AnimatorSet mTransition;
     private Handler mHandler = new Handler();
+    private boolean mAllowVibration = true;
 
     public interface OnValueSelectedListener {
         void onValueSelected(int pickerIndex, int newValue, boolean autoAdvance);
@@ -125,7 +128,10 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
         // Prepare mapping to snap touchable degrees to selectable degrees.
         preparePrefer30sMap();
 
-        mVibrator = (Vibrator) context.getSystemService(Service.VIBRATOR_SERVICE);
+        if (!isInEditMode()) {
+        	mVibrator = (Vibrator) context.getSystemService(Service.VIBRATOR_SERVICE);
+        	mAccessibilityManager = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
+        }
         mLastVibrate = 0;
         mLastValueSelected = -1;
 
@@ -137,7 +143,6 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
         mGrayBox.setVisibility(View.INVISIBLE);
         addView(mGrayBox);
 
-        mAccessibilityManager = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
         mTimeInitialized = false;
     }
@@ -155,6 +160,10 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
 
         super.onMeasure(MeasureSpec.makeMeasureSpec(minDimension, widthMode),
                 MeasureSpec.makeMeasureSpec(minDimension, heightMode));
+    }
+
+    public void setAllowVibration(boolean mAllowVibration) {
+        this.mAllowVibration = mAllowVibration;
     }
 
     public void setOnValueSelectedListener(OnValueSelectedListener listener) {
@@ -175,7 +184,12 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
             return;
         }
         mIs24HourMode = is24HourMode;
-        mHideAmPm = mAccessibilityManager.isTouchExplorationEnabled()? true : mIs24HourMode;
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            mHideAmPm = mIs24HourMode;
+        } else {
+            mHideAmPm = mAccessibilityManager.isTouchExplorationEnabled()? true : mIs24HourMode;
+        }
 
         // Initialize the circle and AM/PM circles if applicable.
         mCircleView.initialize(context, mHideAmPm);
@@ -719,7 +733,7 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
      * happen if we have vibrated very recently.
      */
     public void tryVibrate() {
-        if (mVibrator != null) {
+        if (mAllowVibration && mVibrator != null) {
             long now = SystemClock.uptimeMillis();
             // We want to try to vibrate each individual tick discretely.
             if (now - mLastVibrate >= 125) {
