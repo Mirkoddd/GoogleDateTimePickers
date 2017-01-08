@@ -66,6 +66,7 @@ public class DatePickerDialog extends DialogFragment implements
     private static final String KEY_SELECTED_MONTH = "month";
     private static final String KEY_SELECTED_DAY = "day";
     private static final String KEY_ENABLE_CLEAR_BUTTON = "enableClear";
+    private static final String KEY_ALLOW_VIBRATION = "allowVibration";
     private static final String KEY_LIST_POSITION = "list_position";
     private static final String KEY_WEEK_START = "week_start";
     private static final String KEY_YEAR_START = "year_start";
@@ -117,6 +118,7 @@ public class DatePickerDialog extends DialogFragment implements
 	private boolean mEnableClearButton;
 
 	private Button mClearButton;
+    private boolean mAllowVibration = true;
 
     /**
      * The callback used to indicate the user is done filling in the date.
@@ -169,6 +171,10 @@ public class DatePickerDialog extends DialogFragment implements
         mEnableClearButton = enableClear;
     }
 
+    public void setAllowVibration(boolean allowVibration) {
+        this.mAllowVibration = allowVibration;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,6 +187,7 @@ public class DatePickerDialog extends DialogFragment implements
             mCalendar.set(Calendar.MONTH, savedInstanceState.getInt(KEY_SELECTED_MONTH));
             mCalendar.set(Calendar.DAY_OF_MONTH, savedInstanceState.getInt(KEY_SELECTED_DAY));
             mEnableClearButton = savedInstanceState.getBoolean(KEY_ENABLE_CLEAR_BUTTON, false);
+            mAllowVibration = savedInstanceState.getBoolean(KEY_ALLOW_VIBRATION, true);
         }
     }
 
@@ -195,6 +202,7 @@ public class DatePickerDialog extends DialogFragment implements
         outState.putInt(KEY_YEAR_END, mMaxYear);
         outState.putInt(KEY_CURRENT_VIEW, mCurrentView);
         outState.putBoolean(KEY_ENABLE_CLEAR_BUTTON, mEnableClearButton);
+        outState.putBoolean(KEY_ALLOW_VIBRATION, mAllowVibration);
         int listPosition = -1;
         if (mCurrentView == MONTH_AND_DAY_VIEW) {
             listPosition = mDayPickerView.getMostVisiblePosition();
@@ -492,7 +500,7 @@ public class DatePickerDialog extends DialogFragment implements
      */
     @Override
     public void tryVibrate() {
-        if (mVibrator != null) {
+        if (mAllowVibration && mVibrator != null) {
             long now = SystemClock.uptimeMillis();
             // We want to try to vibrate each individual tick discretely.
             if (now - mLastVibrate >= 125) {

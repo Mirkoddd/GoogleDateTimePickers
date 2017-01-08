@@ -25,6 +25,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.text.format.DateUtils;
@@ -93,6 +94,7 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
 
     private AnimatorSet mTransition;
     private Handler mHandler = new Handler();
+    private boolean mAllowVibration = true;
 
     public interface OnValueSelectedListener {
         void onValueSelected(int pickerIndex, int newValue, boolean autoAdvance);
@@ -158,6 +160,10 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
 
         super.onMeasure(MeasureSpec.makeMeasureSpec(minDimension, widthMode),
                 MeasureSpec.makeMeasureSpec(minDimension, heightMode));
+    }
+
+    public void setAllowVibration(boolean mAllowVibration) {
+        this.mAllowVibration = mAllowVibration;
     }
 
     public void setOnValueSelectedListener(OnValueSelectedListener listener) {
@@ -727,7 +733,7 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
      * happen if we have vibrated very recently.
      */
     public void tryVibrate() {
-        if (mVibrator != null) {
+        if (mAllowVibration && mVibrator != null) {
             long now = SystemClock.uptimeMillis();
             // We want to try to vibrate each individual tick discretely.
             if (now - mLastVibrate >= 125) {

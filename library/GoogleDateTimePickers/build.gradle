@@ -1,17 +1,30 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.3'
+    }
+}
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+version = "1.0.1"
+group="org.unknown"
+archivesBaseName = "googledatetimepickers"
 
 dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar', exclude: ['android-support-v4.jar', 'nineoldandroids*.jar'])
-    compile 'com.android.support:support-v4:22.1.1'
+//    compile fileTree(dir: 'libs', include: '*.jar', exclude: ['android-support-v4.jar', 'nineoldandroids*.jar'])
+    compile 'com.android.support:support-v4:25.1.0'
 }
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 22
+    buildToolsVersion '24.0.2'
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 21
+        minSdkVersion 14
+        targetSdkVersion 22
     }
     sourceSets {
         main {
@@ -25,5 +38,14 @@ android {
         }
 
         instrumentTest.setRoot('tests')
+    }
+}
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri(project.repositoryUrl))
+        }
     }
 }
